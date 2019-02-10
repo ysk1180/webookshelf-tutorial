@@ -1,0 +1,33 @@
+<div class='wrap'>
+  <div class="preview">
+    <%# <%= image_tag 'bookshelf.png', width: 315 %>
+    <span class="shelf-title">
+      お気に入りの本
+    </span>
+    <span class="img" data-title="">
+      <a href="" target="_blank" id="preview_url">
+        <img src="" id="preview_image" width="75px">
+      </a>
+    </span>
+  </div>
+</div>
+
+<div id='confirmation-button' style='display: none;'>
+  <button id="save-button"></i>本棚をシェアする</button>
+</div>
+
+<div class='info'></i>タイトルの一部を入力し、選択してください</div>
+
+<%= form_with(model: @post) do |form| %>
+  <div class='form'>
+    <div class="form-row dvd-name">
+      <div class="form-group col-3 form-text">
+        タイトル
+      </div>
+      <div class="form-group col-8">
+        <%= form.text_area :keyword, id: :keyword, class:'form-control', rows:"1" %>
+      </div>
+    </div>
+    <div id="display"></div>
+  </div>
+<% end %>
