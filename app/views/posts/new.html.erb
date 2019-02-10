@@ -1,15 +1,13 @@
-<div class='wrap'>
-  <div class="preview">
-    <%# <%= image_tag 'bookshelf.png', width: 315 %>
-    <span class="shelf-title">
-      お気に入りの本
-    </span>
-    <span class="img" data-title="">
-      <a href="" target="_blank" id="preview_url">
-        <img src="" id="preview_image" width="75px">
-      </a>
-    </span>
-  </div>
+<div class="preview">
+  <%= image_tag 'bookshelf.png', width: 315 %>
+  <span class="shelf-title">
+    お気に入りの本
+  </span>
+  <span class="img" data-title="">
+    <a href="" target="_blank" id="preview_url">
+      <img src="" id="preview_image" height="125px">
+    </a>
+  </span>
 </div>
 
 <div id='confirmation-button' style='display: none;'>
@@ -25,9 +23,9 @@
         タイトル
       </div>
       <div class="form-group col-8">
-        <%= form.text_area :keyword, id: :keyword, class:'form-control', rows:"1" %>
+        <%= form.text_area :keyword, id: :keyword, class: 'form-control', rows: '1' %>
       </div>
     </div>
-    <div id="display"></div>
+    <div id="candidate"></div>
   </div>
 <% end %>

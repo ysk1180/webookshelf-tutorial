@@ -7,7 +7,7 @@ $(function(){
       globalTimeout = null;
       // キーワードに入力がないときは検索しないようにする
       if (keyword === ''){
-        $(`#display`).css('display','none');
+        $(`#candidate`).css('display','none');
         return false
       };
       $.ajax({
@@ -17,8 +17,8 @@ $(function(){
         async: true,
         data: {keyword: keyword},
       }).done(function(data){
-        $(`#display`).css('display', '');
-        $(`#display`).html(data.content);
+        $(`#candidate`).css('display', '');
+        $(`#candidate`).html(data.content);
       });
     }, 700); // 何ms後に検索するか
   }
