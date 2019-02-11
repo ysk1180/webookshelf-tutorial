@@ -1,11 +1,13 @@
 $(function(){
+  // AmazonAPIで検索するサーバー側にデータを渡し、返ってきたデータを表示するメソッド
+  // 一文字ずつ検索してしまうことを防ぐために、入力後一定時間入力がない場合にajaxが動作するようにしている
   function search(keyword){
     if (globalTimeout != null) {
       clearTimeout(globalTimeout);
     }
     globalTimeout = setTimeout(function() {
       globalTimeout = null;
-      // キーワードに入力がないときは検索しないようにする
+      // キーワードに入力がないときは検索せず、検索結果を非表示にする
       if (keyword === ''){
         $(`#items`).css('display','none');
         return false
@@ -17,27 +19,27 @@ $(function(){
         async: true,
         data: {keyword: keyword},
       }).done(function(data){
-        $(`#items`).css('display', '');
         $(`#items`).html(data.content);
       });
-    }, 700); // 何ms後に検索するか
+    }, 700); // 何ms後に検索するかはここで設定
   }
 
-  // 入力後一定時間が過ぎた後にajax処理
+  // 入力フォームに入力があった場合にseachメソッドを呼び出す
   var globalTimeout = null;
   $('#keyword').keyup(function() {
     var keyword = $("#keyword").val();
     search(keyword);
   });
 
-  // 画像生成
+  // 本棚をシェアボタンが押された時に、シェア用の画像を生成する
   $("#save-button").on("click", function () {
-    // 処理前に Loading 画像を表示
+    // 処理前にLoading 画像を表示
     dispLoading('シェア準備中');
 
+    // 画像を識別するために、画像固有のランダムな文字列を付与
     // 生成する文字列の長さ
     var l = 8;
-    // 生成する文字列に含める文字セット
+    // 生成する文字列に含める文字をセット
     var c = "abcdefghijklmnopqrstuvwxyz0123456789";
     var cl = c.length;
     var hash = "";
@@ -45,12 +47,14 @@ $(function(){
       hash += c[Math.floor(Math.random()*cl)];
     }
 
+    // html2canvasというライブラリを使用
     html2canvas($('.preview').get(0), {
       proxy: true,
       useCORS: true
     }).then( function (canvas) {
       var imgData = canvas.toDataURL();
 
+      // サーバー側で、画像をS3へ保存
       $.ajax({
         url: '/make',
         type: 'POST',
@@ -60,10 +64,11 @@ $(function(){
       }).done(function(data){
         var environment = data[0];
         removeLoading();
+        // SweatAlert2という綺麗なダイアログを出せるライブラリを使用
         Swal.fire({
           type: 'success',
-          text: '↓Let\' shar↓',
-          imageUrl: `https://s3-ap-northeast-1.amazonaws.com/webookshelf-tutorial-${}/images/${hash}.png`,
+          text: '↓Let\' shae↓'
+          imageUrl: `https://s3-ap-northeast-1.amazonaws.com/webookshelf-tutorial-${environment}/images/${hash}.png`,
           imageWidth: 315,
           imageAlt: 'Custom image',
           showConfirmButton: false,
@@ -81,17 +86,12 @@ $(function(){
     });
   });
 
-  /* ------------------------------
- Loading イメージ表示関数
- 引数： msg 画面に表示する文言
- ------------------------------ */
+  // Loading イメージ表示メソッド
   function dispLoading(msg){
     var dispMsg = "<div class='loadingMsg'>" + msg + "</div>";
     $("body").append("<div id='loading'>" + dispMsg + "</div>");
   }
-  /* ------------------------------
- Loading イメージ削除関数
- ------------------------------ */
+  // Loading イメージ削除メソッド
   function removeLoading(){
     $("#loading").remove();
   }
