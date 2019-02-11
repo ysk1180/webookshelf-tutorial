@@ -21,7 +21,7 @@
 
   $(".item").on("click", function () {
     preview_image($(this).data('url'), $(this).data('src'), $(this).data('title'));
-    $(`#display`).css('display','none');
+    $(`#items`).css('display','none');
     $('#confirmation-button').css('display','');
     $('#keyword').val('');
 });

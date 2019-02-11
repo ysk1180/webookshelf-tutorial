@@ -4,10 +4,11 @@ body {
   text-align: center;
 }
 
+// プレビュー画像周り
 .preview{
   position: relative;
   display: inline-block;
-  margin: 10px;
+  margin: 20px;
 }
 .img{
   position: absolute;
@@ -20,4 +21,27 @@ body {
   left: 90px;
   font-size: 18px;
   color: white;
+}
+
+// 候補書籍周り
+.item{
+  display: table;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.item-img{
+  display: table-cell;
+}
+.item-title{
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 10px;
+  font-family: "sans-serif";
+}
+
+// 注意文
+.info {
+  color: #A4A4A4;
+  font-size: 13px;
+  margin: 10px;
 }
