@@ -10,7 +10,7 @@ class PostsController < ApplicationController
 
   def make
     generate(to_uploaded(params[:imgData]), params[:hash])
-    data = []
+    data = [Rails.env]
     render :json => data
   end
 
