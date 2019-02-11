@@ -42,31 +42,6 @@ class PostsController < ApplicationController
     books
   end
 
-  # # 楽天APIはCORS対応がうまくできないから保留
-  # def search_by_rakuten(keyword)
-  #   RakutenWebService.configuration do |c|
-  #     c.application_id = ENV['RAKUTEN_APPID']
-  #     c.affiliate_id = ENV['RAKUTEN_AFID']
-  #   end
-  #   # 楽天の商品検索APIで画像がある商品の中で、入力値で検索して上から3件を取得する
-  #   # 商品検索+ランキングでの取得はできないため標準の並び順で上から3件取得する
-  #   res = RakutenWebService::Books::Book.search(title: keyword, hits: 10)
-  #   items = []
-  #   # 取得したデータを使いやすいように配列に格納し直す
-  #   items = res.map{|item| item}
-  #   # 検索結果から本のタイトル,画像URL, 詳細ページURLの取得
-  #   books = []
-  #   items.each do |item|
-  #     book = {
-  #       title: item['title'],
-  #       image: item['largeImageUrl'],
-  #       url: item['affiliateUrl'],
-  #     }
-  #     books << book
-  #   end
-  #   books
-  # end
-
   def to_uploaded(base64_param)
     content_type, string_data = base64_param.match(/data:(.*?);(?:.*?),(.*)$/).captures
     tempfile = Tempfile.new

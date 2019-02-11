@@ -50,8 +50,5 @@ ruby '2.5.1'
 gem 'bootstrap', '~> 4.0.0.beta2.1'
 gem 'jquery-rails'
 
-# ⑤楽天APIを使用
-# gem 'rakuten_web_service'
+# ⑤Amazon APIを使用
 gem 'amazon-ecs'
-
-# gem 'rack-cors', require: 'rack/cors'
