@@ -19,6 +19,7 @@ $(function(){
         async: true,
         data: {keyword: keyword},
       }).done(function(data){
+        $(`#items`).css('display','');
         $(`#items`).html(data.content);
       });
     }, 700); // 何ms後に検索するかはここで設定
@@ -67,13 +68,13 @@ $(function(){
         // SweatAlert2という綺麗なダイアログを出せるライブラリを使用
         Swal.fire({
           type: 'success',
-          text: '↓Let\' shae↓'
+          text: '↓Let\'s share↓',
           imageUrl: `https://s3-ap-northeast-1.amazonaws.com/webookshelf-tutorial-${environment}/images/${hash}.png`,
           imageWidth: 315,
           imageAlt: 'Custom image',
           showConfirmButton: false,
           showCloseButton: true,
-          footer: `<div class=modal-twitter><a href=https://twitter.com/share?text=%23Web本棚&url=https://webookshelf-tutorial.herokuapp.com?h=${hash} class=modal_btn>Twitterシェア</a>`,
+          footer: `<a href=https://twitter.com/share?text=%23Web本棚&url=https://webookshelf-tutorial.herokuapp.com?h=${hash}>Twitterシェア</a>`,
         })
       }).fail( function(data) {
         removeLoading();
