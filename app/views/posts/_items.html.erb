@@ -1,8 +1,8 @@
-<% books&.each.with_index(1) do |book, index| %>
+<% books&.each do |book| %>
   <% if book[:image].present? %>
-    <div class="item" data-src="<%= book[:image] %>" data-url="<%= book[:url] %>" data-title="<%= book[:title] %>">
+    <div class="item" data-src="<%= book[:image] %>" data-url="<%= book[:url] %>">
       <div class='item-img'>
-        <%= image_tag book[:image], width: '55px', id: "image#{index}" %>
+        <%= image_tag book[:image], width: '55px' %>
       </div>
       <div class='item-title'>
         <%= book[:title] %>
@@ -12,17 +12,20 @@
 <% end %>
 
 <script>
-  // プレビュー表示させるためのメソッド
+  // 本棚にプレビュー表示させるためのメソッド
   function preview_image(url, src, title){
     $(`#preview_image`).attr("src", src);
     $(`#preview_url`).attr("href", url);
-    $(`.img`).data("title", title);
   }
 
+  // 検索結果がクリックされた時に↑のメソッドが動くようにする
   $(".item").on("click", function () {
-    preview_image($(this).data('url'), $(this).data('src'), $(this).data('title'));
+    preview_image($(this).data('url'), $(this).data('src'));
+    // 検索結果の非表示化
     $(`#items`).css('display','none');
+    // 本棚をシェアするボタンの表示
     $('#confirmation-button').css('display','');
+    // 入力フォームを空にする
     $('#keyword').val('');
 });
 </script>

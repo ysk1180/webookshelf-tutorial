@@ -1,15 +1,18 @@
 class PostsController < ApplicationController
   def new
+    # OGP画像を表示するために、パラメータの値をインスタンス変数に格納する
     @h = params[:h]
   end
 
   def search
-    contents = { content: render_to_string(partial: 'posts/items.html.erb', locals: {books: search_by_amazon(params[:keyword]), index_number: params[:index]}) }
+    # AmazonAPIでの検索結果を渡したパーシャルファイルを返す
+    contents = { content: render_to_string(partial: 'posts/items.html.erb', locals: {books: search_by_amazon(params[:keyword])} )}
     render json: contents
   end
 
   def make
     generate(to_uploaded(params[:imgData]), params[:hash])
+    # ダイアログで表示する画像のパスが開発環境と本番環境で異なるので環境名を返している
     data = [Rails.env]
     render :json => data
   end
@@ -19,7 +22,6 @@ class PostsController < ApplicationController
   def search_by_amazon(keyword)
     # デバッグ出力用/trueで出力
     Amazon::Ecs.debug = true
-
     # AmazonAPIで検索
     results = Amazon::Ecs.item_search(
       keyword,
@@ -28,8 +30,7 @@ class PostsController < ApplicationController
       response_group: 'ItemAttributes, Images',
       country:  'jp',
     )
-
-    # 検索結果から本のタイトル,画像URL, 詳細ページURLの取得
+    # 検索結果から本のタイトル,画像URL, 詳細ページURLの取得して配列へ格納
     books = []
     results.items.each do |item|
       book = {
