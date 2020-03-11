@@ -51,4 +51,4 @@ gem 'bootstrap', '~> 4.0.0.beta2.1'
 gem 'jquery-rails'
 
 # ⑤Amazon APIを使用
-gem 'amazon-ecs'
+gem 'vacuum'

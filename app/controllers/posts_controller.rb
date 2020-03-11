@@ -20,23 +20,23 @@ class PostsController < ApplicationController
   private
 
   def search_by_amazon(keyword)
-    # デバッグ出力用/trueで出力
-    Amazon::Ecs.debug = true
     # AmazonAPIで検索
-    results = Amazon::Ecs.item_search(
-      keyword,
-      search_index:  'Books',
-      dataType: 'script',
-      response_group: 'ItemAttributes, Images',
-      country:  'jp',
-    )
+    request = Vacuum.new(marketplace: 'JP',
+                         access_key: ENV['AMAZON_API_ACCESS_KEY'],
+                         secret_key: ENV['AMAZON_API_SECRET_KEY'],
+                         partner_tag: ENV['ASSOCIATE_TAG'])
+    response = request.search_items(keywords: keyword,
+                                    search_index: 'Books',
+                                    resources: ['ItemInfo.Title', 'Images.Primary.Large']).to_h
+    items = response.dig('SearchResult', 'Items')
+
     # 検索結果から本のタイトル,画像URL, 詳細ページURLの取得して配列へ格納
     books = []
-    results.items.each do |item|
+    items.each do |item|
       book = {
-        title: item.get('ItemAttributes/Title'),
-        image: item.get('LargeImage/URL'),
-        url: item.get('DetailPageURL'),
+        title: item.dig('ItemInfo', 'Title', 'DisplayValue'),
+        image: item.dig('Images', 'Primary', 'Large', 'URL'),
+        url: item.dig('DetailPageURL')
       }
       books << book
     end
